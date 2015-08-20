@@ -6,10 +6,10 @@
 set -e
 
 :${AWS_ACCESS_KEY_ID:?"Must supply AWS_ACCESS_KEY_ID environment variable"}
-:${AWS_SECRET_ACCESS_KEY:?"Must supply AWS_SECRET_ACCESS_KEY environment variable"}
-:${AWS_DEFAULT_REGION:?"Must supply AWS_DEFAULT_REGION environment variable"}
-:${TF_STATE_BUCKET:?"Must supply TF_STATE_BUCKET environment variable (The S3 bucket to store terraform state)"}
-:${TF_STATE_KEY:?"Must supply TF_STATE_KEY environment variable (The S3 key to store terraform state)"}
+: ${AWS_SECRET_ACCESS_KEY:?"Must supply AWS_SECRET_ACCESS_KEY environment variable"}
+: ${AWS_DEFAULT_REGION:?"Must supply AWS_DEFAULT_REGION environment variable"}
+: ${TF_STATE_BUCKET:?"Must supply TF_STATE_BUCKET environment variable (The S3 bucket to store terraform state)"}
+: ${TF_STATE_KEY:?"Must supply TF_STATE_KEY environment variable (The S3 key to store terraform state)"}
 
 # Create a timestamp for uniquefying stuff
 timestamp=`date +"%Y%m%d%H%M%S"`

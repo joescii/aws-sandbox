@@ -2,9 +2,6 @@
 
 # Applies the terraform configuration to AWS
 
-# Exit if anything fails
-set -e
-
 : ${AWS_ACCESS_KEY_ID:?"Must supply AWS_ACCESS_KEY_ID environment variable"}
 : ${AWS_SECRET_ACCESS_KEY:?"Must supply AWS_SECRET_ACCESS_KEY environment variable"}
 : ${AWS_DEFAULT_REGION:?"Must supply AWS_DEFAULT_REGION environment variable"}
@@ -26,6 +23,12 @@ cd ..
   -backend-config="bucket=${TF_STATE_BUCKET}" \
   -backend-config="key=${TF_STATE_KEY}" 
 
+set status=$?
+  
+echo "terraform returned ${status}"
+
+exit ${status}
+  
 #./terraform/terraform apply \
 #  -var "access_key=${AWS_ACCESS_KEY_ID}" \
 #  -var "secret_key=${AWS_SECRET_ACCESS_KEY}" \

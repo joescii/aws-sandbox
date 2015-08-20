@@ -23,7 +23,7 @@ cd ..
   -backend-config="bucket=${TF_STATE_BUCKET}" \
   -backend-config="key=${TF_STATE_KEY}" 
 
-set status=$?
+status=$?
   
 echo "terraform returned ${status}"
 

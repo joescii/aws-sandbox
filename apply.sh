@@ -18,8 +18,6 @@ wget https://dl.bintray.com/mitchellh/terraform/terraform_0.6.3_linux_amd64.zip
 unzip terraform_0.6.3_linux_amd64.zip
 cd ..
 
-dos2unix *.tf
-
 tf=./terraform/terraform
 
 configureRemoteState () {

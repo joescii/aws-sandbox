@@ -18,19 +18,15 @@ wget https://dl.bintray.com/mitchellh/terraform/terraform_0.6.3_linux_amd64.zip
 unzip terraform_0.6.3_linux_amd64.zip
 cd ..
 
+# The first time you run this script, the following terraform configuration will report an error.
+# No need to worry. It's only because you don't yet have state saved in S3.
 ./terraform/terraform remote config \
   -backend=S3 \
   -backend-config="bucket=${TF_STATE_BUCKET}" \
   -backend-config="key=${TF_STATE_KEY}" 
 
-status=$?
   
-echo "terraform returned ${status}"
-
-exit ${status}
+./terraform/terraform apply \
+  -var "access_key=${AWS_ACCESS_KEY_ID}" \
+  -var "secret_key=${AWS_SECRET_ACCESS_KEY}" \
   
-#./terraform/terraform apply \
-#  -var "access_key=${AWS_ACCESS_KEY_ID}" \
-#  -var "secret_key=${AWS_SECRET_ACCESS_KEY}" \
-#  -var "pac_ami_id=${PAC_AMI_ID}" \
-#  -var "timestamp=${timestamp}"

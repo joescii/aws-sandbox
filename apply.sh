@@ -25,6 +25,9 @@ cd ..
   -backend-config="bucket=${TF_STATE_BUCKET}" \
   -backend-config="key=${TF_STATE_KEY}" 
 
+if [ $? -ne 0 ]; then
+  echo "Configuration of remote state failed, most likely because it doesn't yet exist. Just continue..."
+fi
   
 ./terraform/terraform apply \
   -var "access_key=${AWS_ACCESS_KEY_ID}" \

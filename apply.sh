@@ -18,18 +18,32 @@ wget https://dl.bintray.com/mitchellh/terraform/terraform_0.6.3_linux_amd64.zip
 unzip terraform_0.6.3_linux_amd64.zip
 cd ..
 
+tf=./terraform/terraform
+
+configureRemoteState () {
+  ${tf} remote config \
+    -backend=S3 \
+    -backend-config="bucket=${TF_STATE_BUCKET}" \
+    -backend-config="key=${TF_STATE_KEY}" 
+}
+
 # The first time you run this script, the following terraform configuration will report an error.
 # No need to worry. It's only because you don't yet have state saved in S3.
-./terraform/terraform remote config \
-  -backend=S3 \
-  -backend-config="bucket=${TF_STATE_BUCKET}" \
-  -backend-config="key=${TF_STATE_KEY}" 
+configureRemoteState
 
-if [ $? -ne 0 ]; then
-  echo "Configuration of remote state failed, most likely because it doesn't yet exist. Just continue..."
+remoteConfigStatus=$?
+  
+if [ ${remoteConfigStatus} -ne 0 ]; then
+  echo "Configuration of remote state failed, most likely because it doesn't yet exist. Turning it off for now..."
+  ${tf} remote config -disable
 fi
   
-./terraform/terraform apply \
+${tf} apply \
   -var "access_key=${AWS_ACCESS_KEY_ID}" \
   -var "secret_key=${AWS_SECRET_ACCESS_KEY}" \
   
+if [ ${remoteConfigStatus} -ne 0 ]; then
+  echo "Turning remote state back on and pushing to S3..."
+  configureRemoteState
+  ${tf} remote push
+fi

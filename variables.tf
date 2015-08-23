@@ -12,7 +12,7 @@ variable "zone_A" {
 variable "zone_B" {
   default = "us-west-1c"
 }
-variable "aws_nat_ami" {
+variable "nat_ami" {
 	default = "ami-ada746e9"
 }
 variable "bastion_ami" {

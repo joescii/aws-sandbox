@@ -36,19 +36,19 @@ resource "aws_security_group" "nat" {
   vpc_id = "${aws_vpc.default.id}"
 }
 
-#resource "aws_instance" "nat" {
-#  tags {
-#    Name = "nat"
-#  }
-#  ami = "${var.nat_ami}"
-#  availability_zone = "${var.zone_A}"
-#  instance_type = "t2.micro"
-#  key_name = "${var.key_name}"
-#  security_groups = ["${aws_security_group.nat.id}"]
-#  subnet_id = "${aws_subnet.public-A.id}"
-#  associate_public_ip_address = true
-#  source_dest_check = false
-#}
+resource "aws_instance" "nat" {
+  tags {
+    Name = "nat"
+  }
+  ami = "${var.nat_ami}"
+  availability_zone = "${var.zone_A}"
+  instance_type = "t2.micro"
+  key_name = "${var.key_name}"
+  security_groups = ["${aws_security_group.nat.id}"]
+  subnet_id = "${aws_subnet.public-A.id}"
+  associate_public_ip_address = true
+  source_dest_check = false
+}
 
 # Public subnets
 resource "aws_subnet" "public-A" {
@@ -101,14 +101,14 @@ resource "aws_subnet" "private-B" {
 }
 
 # Routing table for private subnets
-#resource "aws_route_table" "private" {
-#  vpc_id = "${aws_vpc.default.id}"
-#
-#  route {
-#    cidr_block = "0.0.0.0/0"
-#    instance_id = "${aws_instance.nat.id}"
-#  }
-#}
+resource "aws_route_table" "private" {
+  vpc_id = "${aws_vpc.default.id}"
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    instance_id = "${aws_instance.nat.id}"
+  }
+}
 
 resource "aws_route_table_association" "private-A" {
   subnet_id = "${aws_subnet.private-A.id}"
@@ -135,14 +135,14 @@ resource "aws_security_group" "bastion" {
   vpc_id = "${aws_vpc.default.id}"
 }
 
-#resource "aws_instance" "bastion" {
-#  tags {
-#    Name = "bastion"
-#  }
-#  ami = "${var.bastion_ami}"
-#  availability_zone = "${var.zone_A}"
-#  instance_type = "t2.micro"
-#  key_name = "${var.key_name}"
-#  security_groups = ["${aws_security_group.bastion.id}"]
-#  subnet_id = "${aws_subnet.public-A.id}"
-#}
+resource "aws_instance" "bastion" {
+  tags {
+    Name = "bastion"
+  }
+  ami = "${var.bastion_ami}"
+  availability_zone = "${var.zone_A}"
+  instance_type = "t2.micro"
+  key_name = "${var.key_name}"
+  security_groups = ["${aws_security_group.bastion.id}"]
+  subnet_id = "${aws_subnet.public-A.id}"
+}

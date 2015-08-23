@@ -34,16 +34,16 @@ configureRemoteState
 remoteConfigStatus=$?
   
 if [ ${remoteConfigStatus} -ne 0 ]; then
-  echo "Configuration of remote state failed, most likely because it doesn't yet exist. Turning it off for now..."
-  ${tf} remote config -disable
+  echo "Configuration of remote state failed, most likely because it doesn't yet exist. Pushing a blank state..."
+  ${tf} remote push
 fi
   
 ${tf} apply \
   -var "access_key=${AWS_ACCESS_KEY_ID}" \
   -var "secret_key=${AWS_SECRET_ACCESS_KEY}" \
   
-if [ ${remoteConfigStatus} -ne 0 ]; then
-  echo "Turning remote state back on and pushing to S3..."
-  configureRemoteState
-  ${tf} remote push
-fi
+#if [ ${remoteConfigStatus} -ne 0 ]; then
+#  echo "Turning remote state back on and pushing to S3..."
+#  configureRemoteState
+#  ${tf} remote push
+#fi

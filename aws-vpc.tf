@@ -101,14 +101,14 @@ resource "aws_subnet" "private-B" {
 }
 
 # Routing table for private subnets
-resource "aws_route_table" "private" {
-  vpc_id = "${aws_vpc.default.id}"
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.nat.id}"
-  }
-}
+#resource "aws_route_table" "private" {
+#  vpc_id = "${aws_vpc.default.id}"
+#
+#  route {
+#    cidr_block = "0.0.0.0/0"
+#    instance_id = "${aws_instance.nat.id}"
+#  }
+#}
 
 resource "aws_route_table_association" "private-A" {
   subnet_id = "${aws_subnet.private-A.id}"

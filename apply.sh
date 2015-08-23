@@ -2,6 +2,7 @@
 
 # Applies the terraform configuration to AWS
 
+# Check that all of our vars are defined
 : ${AWS_ACCESS_KEY_ID:?"Must supply AWS_ACCESS_KEY_ID environment variable"}
 : ${AWS_SECRET_ACCESS_KEY:?"Must supply AWS_SECRET_ACCESS_KEY environment variable"}
 : ${AWS_DEFAULT_REGION:?"Must supply AWS_DEFAULT_REGION environment variable"}
@@ -20,30 +21,18 @@ cd ..
 
 tf=./terraform/terraform
 
-configureRemoteState () {
-  ${tf} remote config \
-    -backend=S3 \
-    -backend-config="bucket=${TF_STATE_BUCKET}" \
-    -backend-config="key=${TF_STATE_KEY}" 
-}
+# Install aws cli
+pip install awscli
 
-# The first time you run this script, the following terraform configuration will report an error.
-# No need to worry. It's only because you don't yet have state saved in S3.
-configureRemoteState
+# Get the current terraform state
+aws s3 cp s3://${TF_STATE_BUCKET}/${TF_STATE_KEY} ./terraform.tfstate
 
-remoteConfigStatus=$?
+s3status=$?
+echo "s3 exited with ${s3status}"
   
-#if [ ${remoteConfigStatus} -ne 0 ]; then
-#  echo "Configuration of remote state failed, most likely because it doesn't yet exist. Pushing a blank state..."
-#  ${tf} remote push
-#fi
+#${tf} apply \
+#  -var "access_key=${AWS_ACCESS_KEY_ID}" \
+#  -var "secret_key=${AWS_SECRET_ACCESS_KEY}" \
   
-${tf} apply \
-  -var "access_key=${AWS_ACCESS_KEY_ID}" \
-  -var "secret_key=${AWS_SECRET_ACCESS_KEY}" \
-  
-#if [ ${remoteConfigStatus} -ne 0 ]; then
-#  echo "Turning remote state back on and pushing to S3..."
-#  configureRemoteState
-#  ${tf} remote push
-#fi
+# Save the state for next time
+#aws s3 cp ./terraform.tfstate s3://${TF_STATE_BUCKET}/${TF_STATE_KEY} 

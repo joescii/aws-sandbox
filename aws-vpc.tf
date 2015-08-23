@@ -48,7 +48,7 @@ resource "aws_instance" "nat" {
   subnet_id = "${aws_subnet.public-A.id}"
   associate_public_ip_address = true
   source_dest_check = false
-
+}
 
 # Public subnets
 resource "aws_subnet" "public-A" {

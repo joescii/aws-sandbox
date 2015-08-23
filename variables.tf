@@ -18,3 +18,6 @@ variable "nat_ami" {
 variable "bastion_ami" {
 	default = "ami-896d93cd"
 }
+variable "key_name" {
+  default = "sandbox"
+}

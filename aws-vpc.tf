@@ -43,7 +43,7 @@ resource "aws_instance" "nat" {
   ami = "${var.nat_ami}"
   availability_zone = "${var.zone_A}"
   instance_type = "t2.micro"
-  key_name = "sandbox-NAT"
+  key_name = "${var.key_name}"
   security_groups = ["${aws_security_group.nat.id}"]
   subnet_id = "${aws_subnet.public-A.id}"
   associate_public_ip_address = true
@@ -142,7 +142,7 @@ resource "aws_instance" "bastion" {
   ami = "${var.bastion_ami}"
   availability_zone = "${var.zone_A}"
   instance_type = "t2.micro"
-  key_name = "sandbox-bastion"
+  key_name = "${var.key_name}"
   security_groups = ["${aws_security_group.bastion.id}"]
   subnet_id = "${aws_subnet.public-A.id}"
 }

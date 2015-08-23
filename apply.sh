@@ -29,10 +29,9 @@ configureRemoteState () {
 
 # The first time you run this script, the following terraform configuration will report an error.
 # No need to worry. It's only because you don't yet have state saved in S3.
-#configureRemoteState
+configureRemoteState
 
-#remoteConfigStatus=$?
-remoteConfigStatus=0
+remoteConfigStatus=$?
   
 if [ ${remoteConfigStatus} -ne 0 ]; then
   echo "Configuration of remote state failed, most likely because it doesn't yet exist. Turning it off for now..."

@@ -28,15 +28,15 @@ tf=./terraform/terraform
 pip install awscli
 
 # Get the current terraform state
-#aws s3 cp s3://${TF_STATE_BUCKET}/${TF_STATE_KEY} ./terraform.tfstate
+aws s3 cp s3://${TF_STATE_BUCKET}/${TF_STATE_KEY} ./terraform.tfstate
   
-${tf} apply \
-  -var "access_key=${AWS_ACCESS_KEY_ID}" \
-  -var "secret_key=${AWS_SECRET_ACCESS_KEY}" 
-  
-#${tf} destroy \
+#${tf} apply \
 #  -var "access_key=${AWS_ACCESS_KEY_ID}" \
 #  -var "secret_key=${AWS_SECRET_ACCESS_KEY}" 
+  
+${tf} destroy \
+  -var "access_key=${AWS_ACCESS_KEY_ID}" \
+  -var "secret_key=${AWS_SECRET_ACCESS_KEY}" 
   
 # Save the state for next time
 aws s3 cp ./terraform.tfstate s3://${TF_STATE_BUCKET}/${TF_STATE_KEY} 
